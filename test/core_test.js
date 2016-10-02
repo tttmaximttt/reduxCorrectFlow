@@ -50,6 +50,64 @@ describe('core logic', () => {
 			}));
 		});
 
+		it('should put winner of current voting in the ehd of list', () => {
+			const state = Map({
+				vote: Map({
+					pair: List.of('Transporting', '28 days later'),
+					tally: Map({
+						'Transporting': 4,
+						'28 days later': 2
+					}),
+				}),
+				entries: List.of('Sunshine', 'Millions', '127 Hours')
+			});
+			const nextState = next(state);
+			expect(nextState).to.equal(Map({
+				vote: Map({
+					pair: List.of('Sunshine', 'Millions'),
+				}),
+				entries: List.of('127 Hours', 'Transporting')
+			}));
+		});
+		
+		it('if case of voting is draw, both item\'s should be put in the end of the list', () => {
+			const state = Map({
+				vote: Map({
+					pair: List.of('Transporting', '28 days later'),
+					tally: Map({
+						'Transporting': 4,
+						'28 days later': 4
+					})
+				}),
+				entries: List.of('Sunshine', 'Millions', '127 Hours')
+			});
+
+			const nextState = next(state);
+			expect(nextState).to.equal(Map({
+				vote: Map({
+					pair: List.of('Sunshine', 'Millions'),
+				}),
+				entries: List.of('127 Hours', 'Transporting', '28 days later')
+			}));
+		});
+		
+		it('when in list last only one item, mark them like a winner', () => {
+			const state = Map({
+				vote: Map({
+					pair: List.of('Transporting', '28 days later'),
+					tally: Map({
+						'Transporting': 4,
+						'28 days later': 2
+					})
+				}),
+				entries: List.of()
+			});
+			const nextState = next(state);
+			expect(nextState).to.equal(Map({
+				winner: 'Transporting'
+			}))
+		});
+		
 	});
 
 	describe('vote', () => {
