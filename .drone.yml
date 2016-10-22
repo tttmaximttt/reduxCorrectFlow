@@ -1,0 +1,12 @@
+build:
+  frontend:
+    image: node:5.3.0
+    commands:
+      - npm install
+      - npm test
+  backend:
+    image: golang:1.5
+    commands:
+      - go get
+      - go build
+      - go test
