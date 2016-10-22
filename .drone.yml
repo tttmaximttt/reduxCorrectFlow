@@ -1,5 +1,5 @@
 test:
-    image: node:6.1
+    image: node:6.0
     commands:
         - npm install
         - npm test
